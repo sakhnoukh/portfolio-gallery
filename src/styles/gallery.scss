@@ -57,49 +57,48 @@
   justify-content: flex-end;
   padding-bottom: 32vh;
   background:
-    /* Previous room's floor gradient remains the base */
-    linear-gradient(to bottom, var(--floor-from, #d8d8d8), var(--floor-end-from, #999999)) left bottom / 100% 30% no-repeat,
-    /* Wall horizontal blend — top 70%, pinned to top */
+    /* Floor vertical darkening — multiplies with floor color below */
+    linear-gradient(to bottom, #ffffff 0%, #b4b4b4 100%) left bottom / 100% 29.8% no-repeat,
+    /* Floor horizontal color transition */
+    linear-gradient(to right, var(--floor-from, #d8d8d8), var(--floor-to, #d8d8d8)) left bottom / 100% 29.8% no-repeat,
+    /* Wall horizontal blend — top 70% */
     linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff)) left top / 100% 70% no-repeat;
+  background-blend-mode: multiply, normal, normal;
 
-  &::after {
+  /* Baseboard — pseudo-element so it's independent of background layers */
+  &::before {
     content: '';
     position: absolute;
-    z-index: 1;
     left: 0;
     right: 0;
     top: 70%;
     height: 2px;
-    pointer-events: none;
     background: #b0b0b0;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    z-index: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 30%;
+    z-index: 1;
     pointer-events: none;
-    background: linear-gradient(to bottom, var(--floor-to, #d8d8d8), var(--floor-end-to, #999999));
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 100%);
   }
 
   .hallway-label {
     margin: 0 8vw 0 0;
     display: inline-block;
+    position: relative;
+    z-index: 1;
     font-family: var(--sans);
-    font-weight: 300;
+    font-weight: 400;
     font-size: clamp(1rem, 2vw, 1.6rem);
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.5);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
-    position: relative;
-    z-index: 1;
+    white-space: nowrap;
+    color: rgba(30, 30, 30, 0.55);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.wall-segment--first-entrance {
+  width: clamp(280px, 32vw, 480px);
+
+  .hallway-label {
+    margin-right: clamp(2rem, 4vw, 4rem);
   }
 }
 
@@ -203,18 +202,19 @@
 
   .wall-segment--hallway {
     width: 40vw;
-
-    &::after {
-      top: 80%;
-    }
-
     background:
-      linear-gradient(to bottom, var(--floor-from, #d8d8d8), var(--floor-end-from, #999999)) left bottom / 100% 20% no-repeat,
+      linear-gradient(to bottom, #ffffff 0%, #b4b4b4 100%) left bottom / 100% 19.8% no-repeat,
+      linear-gradient(to right, var(--floor-from, #d8d8d8), var(--floor-to, #d8d8d8)) left bottom / 100% 19.8% no-repeat,
       linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff)) left top / 100% 80% no-repeat;
+    background-blend-mode: multiply, normal, normal;
 
     &::before {
-      height: 20%;
+      top: 80%;
     }
+  }
+
+  .wall-segment--first-entrance {
+    width: 50vw;
   }
 
   .piece-group {

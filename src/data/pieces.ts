@@ -1,3 +1,6 @@
+import nexusCover from '../../Covers/Nexus.png'
+import madridCover from '../../Covers/madrid-guide.jpeg'
+
 export type FrameVariant = 'modern' | 'classic' | 'canvas'
 
 export type RoomId = 'projects' | 'experience' | 'personal'
@@ -37,34 +40,39 @@ export interface Piece {
   accent: string
   subtitle?: string
   timeline?: TimelineEntry[]
+  cover?: string
+  frameRatio?: string
 }
 
 export const pieces: Piece[] = [
   {
-    id: 'project-aurora',
-    title: 'Aurora',
-    year: '2025',
+    id: 'project-nexus',
+    title: 'Nexus',
+    year: '2026',
     medium: 'React · TypeScript · WebGL',
     description:
-      'A real-time data visualisation platform rendered as living light. Placeholder piece — swap with your flagship project.',
+      'A multimodal RAG project, with a custom assisted learning function for easy PDF comprehension.',
     variant: 'modern',
     kind: 'poster',
     room: 'projects',
     accent: '#1d3557',
     subtitle: 'No. 01',
+    cover: nexusCover,
   },
   {
-    id: 'project-ledger',
-    title: 'Ledger',
-    year: '2024',
+    id: 'project-madrid',
+    title: 'Madrid Guide',
+    year: '2026',
     medium: 'Node.js · PostgreSQL · Docker',
     description:
-      'A minimalist finance tracker built for clarity over clutter. Placeholder piece — swap with a backend-heavy project.',
+      'A personal website for saving, reviewing and sharing my favourite places in Madrid.',
     variant: 'modern',
     kind: 'poster',
     room: 'projects',
     accent: '#6b2737',
     subtitle: 'No. 02',
+    cover: madridCover,
+    frameRatio: '4 / 3',
   },
   {
     id: 'project-atlas',
@@ -93,9 +101,9 @@ export const pieces: Piece[] = [
     subtitle: 'Currently reading',
   },
   {
-    id: 'photography',
-    title: 'Street Light Studies',
-    year: '2023–',
+    id: 'cooking',
+    title: 'Cooking & Baking',
+    year: 'Ongoing',
     medium: 'Photography · 35mm',
     description:
       'Weekend studies of the city after dark. Placeholder illustration — swap with a favourite photograph.',
@@ -117,10 +125,11 @@ export const pieces: Piece[] = [
     room: 'experience',
     accent: '#22223b',
     timeline: [
-      { year: '2024', role: 'Senior Engineer', place: 'Placeholder Co.' },
-      { year: '2022', role: 'Software Engineer', place: 'Example Labs' },
-      { year: '2020', role: 'Junior Developer', place: 'Startup Studio' },
-      { year: '2019', role: 'B.Sc. Computer Science', place: 'University' },
+      { year: '2023-2027', role: 'B.Sc. Computer Science & AI', place: 'IE University' },
+      { year: '2024', role: 'Cybersecurity Intern', place: 'MNT Halan' },
+      { year: '2025', role: 'Software Engineer', place: 'Freelance' },
+      { year: '2025-2026', role: 'Blockchain Developer', place: 'Help.Fun' },
+      { year: '2026', role: 'R&D Intern', place: 'Orascom Construction' },
     ],
   },
   {

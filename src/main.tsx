@@ -6,6 +6,7 @@ import './styles/gallery.scss'
 import './styles/frame.scss'
 import './styles/placard.scss'
 import './styles/inspect.scss'
+import './styles/gallery-nav.scss'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

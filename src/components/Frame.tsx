@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { Piece } from '../data/pieces'
 import { ArtContent } from './ArtContent'
 
@@ -26,7 +27,10 @@ export function Frame({ piece, onInspect }: FrameProps) {
             }
           : undefined
       }
-      style={interactive ? { cursor: 'pointer' } : undefined}
+      style={{
+        cursor: interactive ? 'pointer' : undefined,
+        '--frame-ratio': piece.frameRatio ?? '3 / 4',
+      } as CSSProperties}
     >
       <div className="frame__art">
         <ArtContent piece={piece} />

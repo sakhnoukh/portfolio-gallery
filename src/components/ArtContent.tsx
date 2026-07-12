@@ -8,6 +8,14 @@ interface ArtContentProps {
 export function ArtContent({ piece }: ArtContentProps) {
   const style = { '--art-accent': piece.accent } as CSSProperties
 
+  if (piece.cover) {
+    return (
+      <div className="art art--cover" style={style}>
+        <img src={piece.cover} alt={piece.title} />
+      </div>
+    )
+  }
+
   if (piece.kind === 'timeline' && piece.timeline) {
     return (
       <div className="art art--timeline" style={style}>
