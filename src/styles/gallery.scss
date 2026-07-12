@@ -8,10 +8,10 @@
     to bottom,
     #ffffff 0%,
     #ffffff 70%,
-    #1a1a1a 70%,
-    #1a1a1a 71%,
-    #a8a8a8 71%,
-    #707070 100%
+    #e0e0e0 70%,
+    #b0b0b0 70.2%,
+    #d8d8d8 70.2%,
+    #999999 100%
   );
 }
 
@@ -21,7 +21,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 71%;
+  top: 70.2%;
   bottom: 0;
   pointer-events: none;
   opacity: 0.12;
@@ -115,14 +115,14 @@
       to bottom,
       #ffffff 0%,
       #ffffff 80%,
-      #1a1a1a 80%,
-      #1a1a1a 81%,
-      #a8a8a8 81%,
-      #707070 100%
+      #e0e0e0 80%,
+      #b0b0b0 80.2%,
+      #d8d8d8 80.2%,
+      #999999 100%
     );
 
     &::after {
-      top: 81%;
+      top: 80.2%;
     }
   }
 
