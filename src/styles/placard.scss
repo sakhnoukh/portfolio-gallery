@@ -1,0 +1,39 @@
+.placard {
+  background: var(--placard-bg);
+  border: 1px solid var(--placard-border);
+  padding: 0.85rem 1.1rem;
+  max-width: clamp(220px, 26vw, 380px);
+  box-shadow: 0 2px 8px -3px rgba(20, 20, 25, 0.12);
+  font-family: var(--sans);
+}
+
+.placard__title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  em {
+    font-weight: 400;
+    color: var(--ink-soft);
+    font-style: normal;
+    margin-left: 0.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+.placard__medium {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 0.3rem;
+}
+
+.placard__description {
+  font-size: 0.74rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-top: 0.55rem;
+}
