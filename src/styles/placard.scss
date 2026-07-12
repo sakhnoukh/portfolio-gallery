@@ -5,6 +5,7 @@
   max-width: clamp(220px, 26vw, 380px);
   box-shadow: 0 2px 8px -3px rgba(20, 20, 25, 0.12);
   font-family: var(--sans);
+  -webkit-box-reflect: below 20vh linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.15) 100%);
 }
 
 .placard__title {
@@ -36,4 +37,10 @@
   line-height: 1.5;
   color: var(--ink-soft);
   margin-top: 0.55rem;
+}
+
+@media (max-width: 767px) {
+  .placard {
+    -webkit-box-reflect: none;
+  }
 }

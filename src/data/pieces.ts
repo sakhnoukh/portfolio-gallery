@@ -6,12 +6,15 @@ export interface Room {
   id: RoomId
   label: string
   wall: string
+  floorStart: string
+  floorEnd: string
+  crease: string
 }
 
 export const rooms: Room[] = [
-  { id: 'projects', label: 'Personal Projects', wall: '#ffffff' },
-  { id: 'experience', label: 'Experience', wall: '#1e3a2f' },
-  { id: 'personal', label: 'Personal Information', wall: '#6e1423' },
+  { id: 'projects', label: 'Personal Projects', wall: '#ffffff', floorStart: '#d8d8d8', floorEnd: '#999999', crease: '#b0b0b0' },
+  { id: 'experience', label: 'Experience', wall: '#1e3a2f', floorStart: '#3a5a4a', floorEnd: '#1a2e24', crease: '#0e1a14' },
+  { id: 'personal', label: 'Personal Information', wall: '#6e1423', floorStart: '#8a2a3a', floorEnd: '#4a0e1a', crease: '#3a0a14' },
 ]
 
 export type ArtKind = 'poster' | 'book' | 'photo' | 'timeline'

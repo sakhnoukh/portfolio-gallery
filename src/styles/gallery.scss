@@ -43,62 +43,63 @@
     to bottom,
     var(--wall, #ffffff) 0%,
     var(--wall, #ffffff) 70%,
-    #e0e0e0 70%,
+    #b0b0b0 70%,
     #b0b0b0 70.2%,
-    #d8d8d8 70.2%,
-    #999999 100%
+    var(--floor-start, #d8d8d8) 70.2%,
+    var(--floor-end, #999999) 100%
   );
 }
 
-/* Hallway: dead space between rooms where wall colour blends */
+/* Hallway: dead space between rooms where wall & floor colour blends */
 .wall-segment--hallway {
   width: 80vw;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-end;
-  padding-bottom: 40vh;
+  padding-bottom: 32vh;
   background:
-    linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent 70%,
-      #e0e0e0 70%,
-      #b0b0b0 70.2%,
-      #d8d8d8 70.2%,
-      #999999 100%
-    ),
-    linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff));
+    /* Previous room's floor gradient remains the base */
+    linear-gradient(to bottom, var(--floor-from, #d8d8d8), var(--floor-end-from, #999999)) left bottom / 100% 30% no-repeat,
+    /* Wall horizontal blend — top 70%, pinned to top */
+    linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff)) left top / 100% 70% no-repeat;
 
-  /* Light rooms bleed into the hallway; concentrate the colour change so the
-     transition feels the same length as dark-to-dark hallways. */
-  &.wall-segment--hallway-from-light {
-    background:
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        transparent 70%,
-        #e0e0e0 70%,
-        #b0b0b0 70.2%,
-        #d8d8d8 70.2%,
-        #999999 100%
-      ),
-      linear-gradient(
-        to right,
-        var(--wall-from, #ffffff) 0%,
-        var(--wall-from, #ffffff) 20%,
-        var(--wall-to, #ffffff) 80%,
-        var(--wall-to, #ffffff) 100%
-      );
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    top: 70%;
+    height: 2px;
+    pointer-events: none;
+    background: #b0b0b0;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 30%;
+    pointer-events: none;
+    background: linear-gradient(to bottom, var(--floor-to, #d8d8d8), var(--floor-end-to, #999999));
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 100%);
   }
 
   .hallway-label {
-    margin: 0;
+    margin: 0 8vw 0 0;
+    display: inline-block;
     font-family: var(--sans);
     font-weight: 300;
-    font-size: 0.7rem;
+    font-size: clamp(1rem, 2vw, 1.6rem);
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
-    mix-blend-mode: difference;
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -193,26 +194,27 @@
       to bottom,
       var(--wall, #ffffff) 0%,
       var(--wall, #ffffff) 80%,
-      #e0e0e0 80%,
+      #b0b0b0 80%,
       #b0b0b0 80.2%,
-      #d8d8d8 80.2%,
-      #999999 100%
+      var(--floor-start, #d8d8d8) 80.2%,
+      var(--floor-end, #999999) 100%
     );
   }
 
   .wall-segment--hallway {
     width: 40vw;
+
+    &::after {
+      top: 80%;
+    }
+
     background:
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        transparent 80%,
-        #e0e0e0 80%,
-        #b0b0b0 80.2%,
-        #d8d8d8 80.2%,
-        #999999 100%
-      ),
-      linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff));
+      linear-gradient(to bottom, var(--floor-from, #d8d8d8), var(--floor-end-from, #999999)) left bottom / 100% 20% no-repeat,
+      linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff)) left top / 100% 80% no-repeat;
+
+    &::before {
+      height: 20%;
+    }
   }
 
   .piece-group {

@@ -95,6 +95,12 @@ export function Gallery() {
                     {
                       '--wall-from': rooms[i - 1].wall,
                       '--wall-to': room.wall,
+                      '--floor-from': rooms[i - 1].floorStart,
+                      '--floor-to': room.floorStart,
+                      '--floor-end-from': rooms[i - 1].floorEnd,
+                      '--floor-end-to': room.floorEnd,
+                      '--crease-from': rooms[i - 1].crease,
+                      '--crease-to': room.crease,
                     } as CSSProperties
                   }
                 >
@@ -108,7 +114,12 @@ export function Gallery() {
                     className="wall-segment"
                     key={piece.id}
                     aria-label={piece.title}
-                    style={{ '--wall': room.wall } as CSSProperties}
+                    style={{
+                      '--wall': room.wall,
+                      '--floor-start': room.floorStart,
+                      '--floor-end': room.floorEnd,
+                      '--crease': room.crease,
+                    } as CSSProperties}
                   >
                     <div className="piece-group">
                       <Frame piece={piece} onInspect={setInspected} />

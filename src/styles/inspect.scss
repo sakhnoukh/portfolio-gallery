@@ -28,6 +28,10 @@
   }
 }
 
+.inspect .placard {
+  -webkit-box-reflect: none;
+}
+
 @keyframes inspect-frame-in {
   from { transform: scale(0.72); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
