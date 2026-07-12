@@ -1,5 +1,19 @@
 export type FrameVariant = 'modern' | 'classic' | 'canvas'
 
+export type RoomId = 'projects' | 'experience' | 'personal'
+
+export interface Room {
+  id: RoomId
+  label: string
+  wall: string
+}
+
+export const rooms: Room[] = [
+  { id: 'projects', label: 'Personal Projects', wall: '#ffffff' },
+  { id: 'experience', label: 'Experience', wall: '#1e3a2f' },
+  { id: 'personal', label: 'Personal Information', wall: '#6e1423' },
+]
+
 export type ArtKind = 'poster' | 'book' | 'photo' | 'timeline'
 
 export interface TimelineEntry {
@@ -16,6 +30,7 @@ export interface Piece {
   description: string
   variant: FrameVariant
   kind: ArtKind
+  room: RoomId
   accent: string
   subtitle?: string
   timeline?: TimelineEntry[]
@@ -31,6 +46,7 @@ export const pieces: Piece[] = [
       'A real-time data visualisation platform rendered as living light. Placeholder piece — swap with your flagship project.',
     variant: 'modern',
     kind: 'poster',
+    room: 'projects',
     accent: '#1d3557',
     subtitle: 'No. 01',
   },
@@ -43,6 +59,7 @@ export const pieces: Piece[] = [
       'A minimalist finance tracker built for clarity over clutter. Placeholder piece — swap with a backend-heavy project.',
     variant: 'modern',
     kind: 'poster',
+    room: 'projects',
     accent: '#6b2737',
     subtitle: 'No. 02',
   },
@@ -55,6 +72,7 @@ export const pieces: Piece[] = [
       'An offline-first hiking companion for iOS. Placeholder piece — swap with a mobile project.',
     variant: 'modern',
     kind: 'poster',
+    room: 'projects',
     accent: '#2d4a3e',
     subtitle: 'No. 03',
   },
@@ -67,6 +85,7 @@ export const pieces: Piece[] = [
       'A rotating shelf of what I am reading now. Placeholder cover — swap with a real book jacket.',
     variant: 'classic',
     kind: 'book',
+    room: 'personal',
     accent: '#8c5a2b',
     subtitle: 'Currently reading',
   },
@@ -79,6 +98,7 @@ export const pieces: Piece[] = [
       'Weekend studies of the city after dark. Placeholder illustration — swap with a favourite photograph.',
     variant: 'classic',
     kind: 'photo',
+    room: 'personal',
     accent: '#3a3a52',
     subtitle: 'Series of 12',
   },
@@ -91,6 +111,7 @@ export const pieces: Piece[] = [
       'Seven years across product teams, told as a single vertical line. Placeholder timeline — swap with your real history.',
     variant: 'canvas',
     kind: 'timeline',
+    room: 'experience',
     accent: '#22223b',
     timeline: [
       { year: '2024', role: 'Senior Engineer', place: 'Placeholder Co.' },
@@ -108,6 +129,7 @@ export const pieces: Piece[] = [
       'Every gallery ends at the guest book. Say hello — links live on the placard.',
     variant: 'canvas',
     kind: 'poster',
+    room: 'personal',
     accent: '#4a4e69',
     subtitle: 'Fin.',
   },

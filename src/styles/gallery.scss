@@ -4,15 +4,7 @@
   height: 100vh;
   width: 100vw;
   margin: 0;
-  background: linear-gradient(
-    to bottom,
-    #ffffff 0%,
-    #ffffff 70%,
-    #e0e0e0 70%,
-    #b0b0b0 70.2%,
-    #d8d8d8 70.2%,
-    #999999 100%
-  );
+  background: #ffffff;
 }
 
 /* Floor texture only — wall stays smooth */
@@ -47,6 +39,67 @@
   gap: clamp(1.5rem, 4vw, 4rem);
   padding: clamp(1rem, 4vw, 4rem);
   padding-bottom: 40vh;
+  background: linear-gradient(
+    to bottom,
+    var(--wall, #ffffff) 0%,
+    var(--wall, #ffffff) 70%,
+    #e0e0e0 70%,
+    #b0b0b0 70.2%,
+    #d8d8d8 70.2%,
+    #999999 100%
+  );
+}
+
+/* Hallway: dead space between rooms where wall colour blends */
+.wall-segment--hallway {
+  width: 80vw;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 40vh;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 70%,
+      #e0e0e0 70%,
+      #b0b0b0 70.2%,
+      #d8d8d8 70.2%,
+      #999999 100%
+    ),
+    linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff));
+
+  /* Light rooms bleed into the hallway; concentrate the colour change so the
+     transition feels the same length as dark-to-dark hallways. */
+  &.wall-segment--hallway-from-light {
+    background:
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 70%,
+        #e0e0e0 70%,
+        #b0b0b0 70.2%,
+        #d8d8d8 70.2%,
+        #999999 100%
+      ),
+      linear-gradient(
+        to right,
+        var(--wall-from, #ffffff) 0%,
+        var(--wall-from, #ffffff) 20%,
+        var(--wall-to, #ffffff) 80%,
+        var(--wall-to, #ffffff) 100%
+      );
+  }
+
+  .hallway-label {
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    mix-blend-mode: difference;
+  }
 }
 
 /* Intro / entrance segment */
@@ -111,15 +164,7 @@
 @media (max-width: 767px) {
   .gallery-pin {
     overflow: visible;
-    background: linear-gradient(
-      to bottom,
-      #ffffff 0%,
-      #ffffff 80%,
-      #e0e0e0 80%,
-      #b0b0b0 80.2%,
-      #d8d8d8 80.2%,
-      #999999 100%
-    );
+    background: #ffffff;
 
     &::after {
       top: 80.2%;
@@ -144,6 +189,30 @@
     align-items: center;
     justify-content: center;
     padding-bottom: clamp(1rem, 4vw, 4rem);
+    background: linear-gradient(
+      to bottom,
+      var(--wall, #ffffff) 0%,
+      var(--wall, #ffffff) 80%,
+      #e0e0e0 80%,
+      #b0b0b0 80.2%,
+      #d8d8d8 80.2%,
+      #999999 100%
+    );
+  }
+
+  .wall-segment--hallway {
+    width: 40vw;
+    background:
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 80%,
+        #e0e0e0 80%,
+        #b0b0b0 80.2%,
+        #d8d8d8 80.2%,
+        #999999 100%
+      ),
+      linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff));
   }
 
   .piece-group {

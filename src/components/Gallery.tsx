@@ -1,7 +1,7 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { Fragment, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { pieces, type Piece } from '../data/pieces'
+import { pieces, rooms, type Piece } from '../data/pieces'
 import { Frame } from './Frame'
 import { Placard } from './Placard'
 import { InspectOverlay } from './InspectOverlay'
@@ -85,13 +85,38 @@ export function Gallery() {
             <span className="intro-hint">Walk right</span>
           </section>
 
-          {pieces.map((piece) => (
-            <section className="wall-segment" key={piece.id} aria-label={piece.title}>
-              <div className="piece-group">
-                <Frame piece={piece} onInspect={setInspected} />
-                <Placard piece={piece} />
-              </div>
-            </section>
+          {rooms.map((room, i) => (
+            <Fragment key={room.id}>
+              {i > 0 && (
+                <section
+                  className={`wall-segment wall-segment--hallway ${rooms[i - 1].wall === '#ffffff' ? 'wall-segment--hallway-from-light' : ''}`}
+                  aria-hidden="true"
+                  style={
+                    {
+                      '--wall-from': rooms[i - 1].wall,
+                      '--wall-to': room.wall,
+                    } as CSSProperties
+                  }
+                >
+                  <p className="hallway-label">{room.label}</p>
+                </section>
+              )}
+              {pieces
+                .filter((piece) => piece.room === room.id)
+                .map((piece) => (
+                  <section
+                    className="wall-segment"
+                    key={piece.id}
+                    aria-label={piece.title}
+                    style={{ '--wall': room.wall } as CSSProperties}
+                  >
+                    <div className="piece-group">
+                      <Frame piece={piece} onInspect={setInspected} />
+                      <Placard piece={piece} />
+                    </div>
+                  </section>
+                ))}
+            </Fragment>
           ))}
         </div>
       </div>
