@@ -39,23 +39,6 @@ export function Gallery() {
           },
         })
 
-        // Entry animation: pieces drift in as they enter the viewport
-        const groups = gsap.utils.toArray<HTMLElement>('.piece-group', track)
-        const fades = groups.map((group) =>
-          gsap.from(group, {
-            opacity: 0,
-            y: 40,
-            duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: group,
-              containerAnimation: tween,
-              start: 'left 85%',
-              toggleActions: 'play none none reverse',
-            },
-          }),
-        )
-
         // Arrow-key navigation between wall segments
         const onKey = (e: KeyboardEvent) => {
           if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
@@ -84,7 +67,6 @@ export function Gallery() {
         return () => {
           window.removeEventListener('wheel', onWheel)
           window.removeEventListener('keydown', onKey)
-          fades.forEach((f) => f.scrollTrigger?.kill())
           tween.scrollTrigger?.kill()
         }
       },
