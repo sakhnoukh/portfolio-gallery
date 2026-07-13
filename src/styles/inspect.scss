@@ -102,6 +102,24 @@
   opacity: 0.5;
 }
 
+.case-study__link {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+  margin-bottom: 3rem;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
 .case-study__body {
   display: flex;
   flex-direction: column;
@@ -113,6 +131,7 @@
     font-size: 1.05rem;
     line-height: 1.75;
     color: var(--ink-soft);
+    white-space: pre-line;
   }
 }
 
@@ -206,6 +225,29 @@
     font-size: 1.05rem;
     line-height: 1.6;
     color: var(--ink-soft);
+  }
+}
+
+.case-study__links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  a {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--placard-border);
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.6;
+    }
   }
 }
 

@@ -33,6 +33,16 @@ function CaseStudyContent({ blocks }: { blocks: CaseStudyBlock[] }) {
                 ))}
               </ul>
             )
+          case 'links':
+            return (
+              <ul className="case-study__links" key={i}>
+                {block.items.map((item, j) => (
+                  <li key={j}>
+                    <a href={item.href} target="_blank" rel="noreferrer">{item.label} ↗</a>
+                  </li>
+                ))}
+              </ul>
+            )
         }
       })}
     </>
@@ -74,6 +84,17 @@ export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
             <span className="case-study__meta-divider">·</span>
             <span>{piece.medium}</span>
           </div>
+
+          {piece.url && (
+            <a
+              className="case-study__link"
+              href={piece.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Visit project ↗
+            </a>
+          )}
 
           <div className="case-study__body">
             <p>{piece.description}</p>
