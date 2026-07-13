@@ -22,6 +22,12 @@ export const rooms: Room[] = [
 
 export type ArtKind = 'poster' | 'book' | 'photo' | 'timeline'
 
+export type CaseStudyBlock =
+  | { type: 'paragraph'; text: string }
+  | { type: 'subheading'; text: string }
+  | { type: 'image'; src: string; alt?: string; caption?: string }
+  | { type: 'list'; items: string[] }
+
 export interface TimelineEntry {
   year: string
   role: string
@@ -42,6 +48,7 @@ export interface Piece {
   timeline?: TimelineEntry[]
   cover?: string
   frameRatio?: string
+  caseStudy?: CaseStudyBlock[]
 }
 
 export const pieces: Piece[] = [
@@ -49,7 +56,7 @@ export const pieces: Piece[] = [
     id: 'project-nexus',
     title: 'Nexus',
     year: '2026',
-    medium: 'React · TypeScript · WebGL',
+    medium: 'Qwen VLM · ChromaDB · RAG',
     description:
       'A multimodal RAG project, with a custom assisted learning function for easy PDF comprehension.',
     variant: 'modern',
@@ -63,7 +70,7 @@ export const pieces: Piece[] = [
     id: 'project-madrid',
     title: 'Madrid Guide',
     year: '2026',
-    medium: 'Node.js · PostgreSQL · Docker',
+    medium: 'Next.js · REST API · Telegram Bot',
     description:
       'A personal website for saving, reviewing and sharing my favourite places in Madrid.',
     variant: 'modern',
@@ -73,6 +80,11 @@ export const pieces: Piece[] = [
     subtitle: 'No. 02',
     cover: madridCover,
     frameRatio: '4 / 3',
+    caseStudy: [
+      {type: 'subheading', text: 'Project Overview'},
+      {type: 'paragraph', text: 'This website stemmed from my struggle with my google maps becoming too cluttered with the amount of pins I had of places in Madrid, where I currently study. '},
+
+    ]
   },
   {
     id: 'project-atlas',

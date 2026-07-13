@@ -1,4 +1,4 @@
-import { Fragment, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { pieces, rooms, type Piece } from '../data/pieces'
@@ -40,6 +40,11 @@ export function Gallery() {
           if (distance <= 0) return
           const progresses = hallwayRefs.current.map((el) => {
             if (!el) return 0
+            const label = el.querySelector('.hallway-label') as HTMLElement | null
+            if (label) {
+              const labelLeftInTrack = el.offsetLeft + label.offsetLeft
+              return Math.min(1, Math.max(0, labelLeftInTrack / distance))
+            }
             return Math.min(1, Math.max(0, el.offsetLeft / distance))
           })
           setSections([
@@ -106,6 +111,17 @@ export function Gallery() {
 
     return () => mm.revert()
   }, [])
+
+  useEffect(() => {
+    const st = scrollTriggerRef.current
+    if (!st) return
+    if (inspected) {
+      st.disable(false)
+    } else {
+      st.enable()
+      ScrollTrigger.refresh()
+    }
+  }, [inspected])
 
   const handleNavigate = (targetProgress: number) => {
     const st = scrollTriggerRef.current

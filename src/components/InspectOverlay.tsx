@@ -1,10 +1,42 @@
 import { useEffect } from 'react'
-import type { Piece } from '../data/pieces'
+import type { CaseStudyBlock, Piece } from '../data/pieces'
 import { Frame } from './Frame'
 
 interface InspectOverlayProps {
   piece: Piece
   onClose: () => void
+}
+
+function CaseStudyContent({ blocks }: { blocks: CaseStudyBlock[] }) {
+  return (
+    <>
+      {blocks.map((block, i) => {
+        switch (block.type) {
+          case 'paragraph':
+            return <p key={i}>{block.text}</p>
+          case 'subheading':
+            return <h2 className="case-study__subheading" key={i}>{block.text}</h2>
+          case 'image':
+            return (
+              <figure className="case-study__figure" key={i}>
+                <img src={block.src} alt={block.alt ?? ''} />
+                {block.caption && (
+                  <figcaption className="case-study__caption">{block.caption}</figcaption>
+                )}
+              </figure>
+            )
+          case 'list':
+            return (
+              <ul className="case-study__list" key={i}>
+                {block.items.map((item, j) => (
+                  <li key={j}>{item}</li>
+                ))}
+              </ul>
+            )
+        }
+      })}
+    </>
+  )
 }
 
 export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
@@ -58,17 +90,7 @@ export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
               </div>
             )}
 
-            <p>
-              This piece represents a deeper exploration of the themes and techniques
-              described above. The work sits at the intersection of craft and concept,
-              balancing technical execution with a clear editorial voice.
-            </p>
-            <p>
-              Each decision in the process — from the choice of materials to the final
-              presentation — was guided by a commitment to clarity and intentionality.
-              The result is a body of work that speaks not only to what was made, but
-              to how and why it was made.
-            </p>
+            {piece.caseStudy && <CaseStudyContent blocks={piece.caseStudy} />}
 
             <div className="case-study__rule" />
 
