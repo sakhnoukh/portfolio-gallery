@@ -6,6 +6,7 @@ import { Frame } from './Frame'
 import { Placard } from './Placard'
 import { InspectOverlay } from './InspectOverlay'
 import { GalleryNav } from './GalleryNav'
+import { CvView } from './CvView'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,6 +17,7 @@ export function Gallery() {
   const hallwayRefs = useRef<(HTMLElement | null)[]>([])
   const [inspected, setInspected] = useState<Piece | null>(null)
   const [progress, setProgress] = useState(0)
+  const [showCv, setShowCv] = useState(false)
   const [sections, setSections] = useState<{ label: string; progress: number }[]>([
     { label: 'HOME', progress: 0 },
     { label: 'PROJ', progress: 0 },
@@ -115,13 +117,13 @@ export function Gallery() {
   useEffect(() => {
     const st = scrollTriggerRef.current
     if (!st) return
-    if (inspected) {
+    if (inspected || showCv) {
       st.disable(false)
     } else {
       st.enable()
       ScrollTrigger.refresh()
     }
-  }, [inspected])
+  }, [inspected, showCv])
 
   const handleNavigate = (targetProgress: number) => {
     const st = scrollTriggerRef.current
@@ -133,8 +135,16 @@ export function Gallery() {
   return (
     <>
       <div className="gallery-pin" ref={pinRef}>
-        <div className="gallery-track" ref={trackRef}>
+        <div className="gallery-track" ref={trackRef} style={showCv ? { visibility: 'hidden' } : undefined}>
           <section className="wall-segment wall-segment--intro">
+            <button
+              className="intro__cv-toggle"
+              onClick={() => setShowCv(true)}
+              aria-label="Switch to CV view"
+            >
+              <span className="intro__cv-toggle-label intro__cv-toggle-label--active">Gallery</span>
+              <span className="intro__cv-toggle-label">CV</span>
+            </button>
             <p>Sami Akhnoukh — Selected Works</p>
             <h1>The Gallery</h1>
             <span className="intro-hint">Walk right</span>
@@ -186,7 +196,11 @@ export function Gallery() {
         </div>
       </div>
 
-      <GalleryNav progress={progress} sections={sections} onNavigate={handleNavigate} />
+      {!showCv && (
+        <GalleryNav progress={progress} sections={sections} onNavigate={handleNavigate} />
+      )}
+
+      {showCv && <CvView onBack={() => setShowCv(false)} />}
 
       {inspected && (
         <InspectOverlay piece={inspected} onClose={() => setInspected(null)} />

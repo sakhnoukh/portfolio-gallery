@@ -7,6 +7,7 @@ import './styles/frame.scss'
 import './styles/placard.scss'
 import './styles/inspect.scss'
 import './styles/gallery-nav.scss'
+import './styles/cv-view.scss'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
