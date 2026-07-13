@@ -114,14 +114,20 @@ export function Gallery() {
     return () => mm.revert()
   }, [])
 
+  const scrollPosRef = useRef(0)
+
   useEffect(() => {
     const st = scrollTriggerRef.current
     if (!st) return
-    if (inspected || showCv) {
+    if (showCv) {
+      scrollPosRef.current = window.scrollY
       st.disable(false)
-    } else {
-      st.enable()
-      ScrollTrigger.refresh()
+    } else if (!inspected) {
+      if (scrollPosRef.current > 0) {
+        st.enable()
+        window.scrollTo({ top: scrollPosRef.current })
+        scrollPosRef.current = 0
+      }
     }
   }, [inspected, showCv])
 

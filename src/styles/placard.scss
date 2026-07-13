@@ -42,5 +42,7 @@
 @media (max-width: 767px) {
   .placard {
     -webkit-box-reflect: none;
+    max-width: clamp(180px, 60vw, 280px);
+    padding: 0.7rem 0.9rem;
   }
 }

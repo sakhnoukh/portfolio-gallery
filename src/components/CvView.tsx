@@ -33,7 +33,17 @@ export function CvView({ onBack }: CvViewProps) {
       >
         Download CV
       </a>
-      <div className="cv-view__frame cv-view__frame--pdfjs">
+      <div
+        className="cv-view__frame cv-view__frame--pdfjs"
+        onClick={(e) => {
+          const target = e.target as HTMLElement
+          const anchor = target.closest('a')
+          if (anchor && !anchor.hasAttribute('download')) {
+            e.preventDefault()
+            window.open(anchor.href, '_blank', 'noreferrer')
+          }
+        }}
+      >
         {loading && (
           <p className="cv-view__loading">Loading CV…</p>
         )}
@@ -71,7 +81,7 @@ export function CvView({ onBack }: CvViewProps) {
                 key={i + 1}
                 pageNumber={i + 1}
                 renderTextLayer
-                renderAnnotationLayer={false}
+                renderAnnotationLayer
                 width={Math.min(820, window.innerWidth * 0.9)}
               />
             ))}

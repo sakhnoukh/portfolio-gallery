@@ -222,7 +222,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-bottom: clamp(1rem, 4vw, 4rem);
+    padding-top: clamp(2rem, 6vh, 4rem);
+    padding-bottom: clamp(2rem, 8vh, 4rem);
     background: linear-gradient(
       to bottom,
       var(--wall, #ffffff) 0%,
@@ -235,7 +236,7 @@
   }
 
   .wall-segment--hallway {
-    width: 40vw;
+    width: 80vw;
     background:
       linear-gradient(to bottom, #ffffff 0%, #b4b4b4 100%) left bottom / 100% 19.8% no-repeat,
       linear-gradient(to right, var(--floor-from, #d8d8d8), var(--floor-to, #d8d8d8)) left bottom / 100% 19.8% no-repeat,
@@ -245,14 +246,32 @@
     &::before {
       top: 80%;
     }
+
+    .hallway-label {
+      font-size: clamp(0.7rem, 3.5vw, 1rem);
+      letter-spacing: 0.15em;
+      margin-right: clamp(1rem, 6vw, 2rem);
+    }
   }
 
   .wall-segment--first-entrance {
-    width: 50vw;
+    width: 80vw;
+  }
+
+  .wall-segment--intro {
+    .intro__cv-toggle {
+      top: 1rem;
+      left: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 9vw, 3rem);
+    }
   }
 
   .piece-group {
     flex-direction: column;
     align-items: center;
+    gap: clamp(1rem, 3vh, 2rem);
   }
 }
