@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import type { CaseStudyBlock, Piece } from '../data/pieces'
 import { Frame } from './Frame'
+import { Bookshelf } from './Bookshelf'
 
 interface InspectOverlayProps {
   piece: Piece
@@ -71,56 +72,77 @@ export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
         Back to Gallery ✕
       </button>
 
-      <div className="case-study-view__split">
-        <div className="case-study-left">
-          <Frame piece={piece} />
+      {piece.kind === 'book' ? (
+        <div className="case-study-view__book">
+          <div className="case-study-view__book-top">
+            <div className="case-study-view__book-frame">
+              <Frame piece={piece} />
+            </div>
+            <div className="case-study-view__book-intro">
+              <p className="case-study__kicker">Selected Work</p>
+              <h1 className="case-study__title">{piece.title}</h1>
+              <div className="case-study__meta">
+                <span>{piece.year}</span>
+                <span className="case-study__meta-divider">·</span>
+                <span>{piece.medium}</span>
+              </div>
+              <p className="case-study__description">{piece.description}</p>
+            </div>
+          </div>
+          <Bookshelf />
         </div>
-
-        <div className="case-study-right">
-          <p className="case-study__kicker">Selected Work</p>
-          <h1 className="case-study__title">{piece.title}</h1>
-          <div className="case-study__meta">
-            <span>{piece.year}</span>
-            <span className="case-study__meta-divider">·</span>
-            <span>{piece.medium}</span>
+      ) : (
+        <div className="case-study-view__split">
+          <div className="case-study-left">
+            <Frame piece={piece} />
           </div>
 
-          {piece.url && (
-            <a
-              className="case-study__link"
-              href={piece.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Visit project ↗
-            </a>
-          )}
+          <div className="case-study-right">
+            <p className="case-study__kicker">Selected Work</p>
+            <h1 className="case-study__title">{piece.title}</h1>
+            <div className="case-study__meta">
+              <span>{piece.year}</span>
+              <span className="case-study__meta-divider">·</span>
+              <span>{piece.medium}</span>
+            </div>
 
-          <div className="case-study__body">
-            <p>{piece.description}</p>
-
-            {piece.kind === 'timeline' && piece.timeline && (
-              <div className="case-study__timeline">
-                {piece.timeline.map((entry) => (
-                  <div className="case-study__timeline-entry" key={`${entry.year}-${entry.role}`}>
-                    <span className="case-study__timeline-year">{entry.year}</span>
-                    <span className="case-study__timeline-role">{entry.role}</span>
-                    <span className="case-study__timeline-place">{entry.place}</span>
-                  </div>
-                ))}
-              </div>
+            {piece.url && (
+              <a
+                className="case-study__link"
+                href={piece.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Visit project ↗
+              </a>
             )}
 
-            {piece.caseStudy && <CaseStudyContent blocks={piece.caseStudy} />}
+            <div className="case-study__body">
+              <p>{piece.description}</p>
 
-            <div className="case-study__rule" />
+              {piece.kind === 'timeline' && piece.timeline && (
+                <div className="case-study__timeline">
+                  {piece.timeline.map((entry) => (
+                    <div className="case-study__timeline-entry" key={`${entry.year}-${entry.role}`}>
+                      <span className="case-study__timeline-year">{entry.year}</span>
+                      <span className="case-study__timeline-role">{entry.role}</span>
+                      <span className="case-study__timeline-place">{entry.place}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
-            <p className="case-study__prompt">
-              Press Escape to return to the gallery
-            </p>
+              {piece.caseStudy && <CaseStudyContent blocks={piece.caseStudy} />}
+
+              <div className="case-study__rule" />
+
+              <p className="case-study__prompt">
+                Press Escape to return to the gallery
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   )
 }
