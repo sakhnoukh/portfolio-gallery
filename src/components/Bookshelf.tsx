@@ -16,7 +16,6 @@ const SHELF_LABELS: Record<string, string> = {
 
 const SPINE_HEIGHTS = [175, 195, 210, 225, 235, 245, 205, 220, 185, 230, 200, 240, 190, 215]
 const BOOK_WIDTH = 64
-const MAX_BOOKS_PER_SHELF = 28
 
 function chunk<T>(arr: T[], size: number): T[][] {
   const chunks: T[][] = []
@@ -32,7 +31,7 @@ function computeBooksPerShelf(width: number): number {
   const gap = 2
   const available = Math.max(0, width - bookcasePadding - shelfPadding)
   const count = Math.floor((available + gap) / (BOOK_WIDTH + gap))
-  return Math.max(3, Math.min(MAX_BOOKS_PER_SHELF, count))
+  return Math.max(3, count)
 }
 
 export function Bookshelf() {
@@ -91,10 +90,7 @@ export function Bookshelf() {
       <div className="bookcase__inner">
         {shelves.map((shelfBooks, shelfIdx) => (
           <div className="bookcase__shelf" key={shelfIdx}>
-            <div
-              className="bookcase__shelf-books"
-              style={{ gridTemplateColumns: `repeat(${booksPerShelf}, 1fr)` }}
-            >
+            <div className="bookcase__shelf-books">
               {shelfBooks.map((book, i) => {
                 const globalIdx = shelfIdx * booksPerShelf + i
                 const color = genreToColor(book.genre)

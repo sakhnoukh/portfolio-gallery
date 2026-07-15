@@ -23,7 +23,9 @@
 
 .bookcase__shelf-books {
   display: grid;
+  grid-auto-columns: 64px;
   grid-auto-flow: column;
+  justify-content: start;
   align-items: flex-end;
   gap: 2px;
   padding: 0 8px 4px;
@@ -75,7 +77,9 @@
 }
 
 .book-spine {
-  width: 100%;
+  width: 64px;
+  min-width: 64px;
+  max-width: 64px;
   display: flex;
   flex-direction: column;
   align-items: center;

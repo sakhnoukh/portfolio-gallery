@@ -85,6 +85,17 @@
   }
 }
 
+.gallery-nav,
+.gallery-nav__line,
+.gallery-nav__label,
+.gallery-nav__dot {
+  transition:
+    color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease,
+    opacity 0.2s ease;
+}
+
 @media (max-width: 767px) {
   .gallery-nav {
     display: none;
