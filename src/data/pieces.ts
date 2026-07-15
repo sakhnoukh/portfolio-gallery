@@ -91,16 +91,17 @@ export const pieces: Piece[] = [
     ]
   },
   {
-    id: 'project-atlas',
-    title: 'Atlas',
-    year: '2024',
-    medium: 'Ghosts',
+    id: 'nyc-taxis',
+    title: 'NYC Taxis',
+    year: '2026',
+    medium: 'MLFlow · Google Maps · Qwen · RAG',
     description:
-      'ADD PROJECT HERE.',
+      'Allows user to select a trip and receive the fastest route, estimated cost and allow preference based trip selection.',
+    url: 'https://github.com/sakhnoukh/Im-waulkin-hereeeee',
     variant: 'modern',
     kind: 'poster',
     room: 'projects',
-    accent: '#2d4a3e',
+    accent: '#93a600',
     subtitle: 'No. 03',
   },
   {

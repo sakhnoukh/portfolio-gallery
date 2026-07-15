@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { genreToColor } from '../lib/genre-color'
 
 interface Book {
@@ -14,8 +14,9 @@ const SHELF_LABELS: Record<string, string> = {
   'did-not-finish': 'Did Not Finish',
 }
 
-const SPINE_HEIGHTS = [200, 220, 240, 210, 230, 190, 250, 215]
-const BOOKS_PER_SHELF = 24
+const SPINE_HEIGHTS = [175, 195, 210, 225, 235, 245, 205, 220, 185, 230, 200, 240, 190, 215]
+const BOOK_WIDTH = 64
+const MAX_BOOKS_PER_SHELF = 28
 
 function chunk<T>(arr: T[], size: number): T[][] {
   const chunks: T[][] = []
@@ -25,10 +26,21 @@ function chunk<T>(arr: T[], size: number): T[][] {
   return chunks
 }
 
+function computeBooksPerShelf(width: number): number {
+  const bookcasePadding = 28 // 14px on each side
+  const shelfPadding = 16 // 8px on each side
+  const gap = 2
+  const available = Math.max(0, width - bookcasePadding - shelfPadding)
+  const count = Math.floor((available + gap) / (BOOK_WIDTH + gap))
+  return Math.max(3, Math.min(MAX_BOOKS_PER_SHELF, count))
+}
+
 export function Bookshelf() {
   const [books, setBooks] = useState<Book[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [booksPerShelf, setBooksPerShelf] = useState(12)
+  const bookcaseRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetch('/api/books')
@@ -46,6 +58,20 @@ export function Bookshelf() {
       })
   }, [])
 
+  useEffect(() => {
+    const el = bookcaseRef.current
+    if (!el) return
+
+    const update = () => {
+      setBooksPerShelf(computeBooksPerShelf(el.clientWidth))
+    }
+
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   if (loading) {
     return <div className="bookshelf bookshelf--loading">Loading bookshelf…</div>
   }
@@ -58,16 +84,21 @@ export function Bookshelf() {
     return <div className="bookshelf bookshelf--empty">No books found.</div>
   }
 
+  const shelves = chunk(books, booksPerShelf)
+
   return (
-    <div className="bookcase">
+    <div className="bookcase" ref={bookcaseRef}>
       <div className="bookcase__inner">
-        {chunk(books, BOOKS_PER_SHELF).map((shelfBooks, shelfIdx) => (
+        {shelves.map((shelfBooks, shelfIdx) => (
           <div className="bookcase__shelf" key={shelfIdx}>
-            <div className="bookcase__shelf-books">
+            <div
+              className="bookcase__shelf-books"
+              style={{ gridTemplateColumns: `repeat(${booksPerShelf}, 1fr)` }}
+            >
               {shelfBooks.map((book, i) => {
-                const globalIdx = shelfIdx * BOOKS_PER_SHELF + i
+                const globalIdx = shelfIdx * booksPerShelf + i
                 const color = genreToColor(book.genre)
-                const height = SPINE_HEIGHTS[globalIdx % SPINE_HEIGHTS.length]
+                const height = SPINE_HEIGHTS[(globalIdx + shelfIdx * 3) % SPINE_HEIGHTS.length]
                 const shelfLabel = SHELF_LABELS[book.shelf] ?? book.shelf
 
                 return (
@@ -82,8 +113,16 @@ export function Bookshelf() {
                     data-shelf={shelfLabel}
                     title={`${book.title} — ${book.author}`}
                   >
+                    <span className="book-spine__bands book-spine__bands--top" aria-hidden="true">
+                      <span className="book-spine__band" />
+                      <span className="book-spine__band" />
+                    </span>
                     <span className="book-spine__title">{book.title}</span>
                     <span className="book-spine__author">{book.author}</span>
+                    <span className="book-spine__bands book-spine__bands--bottom" aria-hidden="true">
+                      <span className="book-spine__band" />
+                      <span className="book-spine__band" />
+                    </span>
                     <span className="book-spine__tooltip">
                       <span className="book-spine__tooltip-title">{book.title}</span>
                       <span className="book-spine__tooltip-author">{book.author}</span>

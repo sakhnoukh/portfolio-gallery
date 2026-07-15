@@ -7,6 +7,7 @@ interface GalleryNavProps {
   progress: number
   sections: GalleryNavSection[]
   onNavigate: (progress: number) => void
+  light?: boolean
 }
 
 function mapProgressToEquidistant(
@@ -38,12 +39,15 @@ function mapProgressToEquidistant(
   return rawProgress
 }
 
-export function GalleryNav({ progress, sections, onNavigate }: GalleryNavProps) {
+export function GalleryNav({ progress, sections, onNavigate, light }: GalleryNavProps) {
   const n = sections.length
   const dotProgress = mapProgressToEquidistant(progress, sections)
 
   return (
-    <nav className="gallery-nav" aria-label="Gallery navigation">
+    <nav
+      className={`gallery-nav ${light ? 'gallery-nav--light' : ''}`}
+      aria-label="Gallery navigation"
+    >
       <div className="gallery-nav__track">
         <div className="gallery-nav__line" />
         {sections.map((section, i) => (

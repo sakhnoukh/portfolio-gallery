@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { pieces, rooms, type Piece } from '../data/pieces'
@@ -64,7 +64,7 @@ export function Gallery() {
             trigger: pin,
             start: 'top top',
             end: () => `+=${getDistance()}`,
-            scrub: 1,
+            scrub: 0.5,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -138,6 +138,25 @@ export function Gallery() {
     window.scrollTo({ top: target, behavior: 'smooth' })
   }
 
+  const activeRoom = useMemo(() => {
+    if (sections.length < 2 || progress < sections[1].progress) return null
+    for (let i = 2; i < sections.length; i++) {
+      if (progress < sections[i].progress) return rooms[i - 2]
+    }
+    return rooms[rooms.length - 1]
+  }, [progress, sections])
+
+  const isRoomDark = (wall: string) => {
+    const hex = wall.replace('#', '')
+    const r = parseInt(hex.slice(0, 2), 16)
+    const g = parseInt(hex.slice(2, 4), 16)
+    const b = parseInt(hex.slice(4, 6), 16)
+    // Standard luminance; threshold chosen so green and red rooms are light, white room is dark
+    return 0.299 * r + 0.587 * g + 0.114 * b < 140
+  }
+
+  const lightNav = activeRoom ? isRoomDark(activeRoom.wall) : false
+
   return (
     <>
       <div className="gallery-pin" ref={pinRef}>
@@ -203,7 +222,12 @@ export function Gallery() {
       </div>
 
       {!showCv && (
-        <GalleryNav progress={progress} sections={sections} onNavigate={handleNavigate} />
+        <GalleryNav
+          progress={progress}
+          sections={sections}
+          onNavigate={handleNavigate}
+          light={lightNav}
+        />
       )}
 
       {showCv && <CvView onBack={() => setShowCv(false)} />}

@@ -64,6 +64,27 @@
   pointer-events: none;
 }
 
+/* Light mode for the green (experience) room */
+.gallery-nav--light {
+  .gallery-nav__line {
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  .gallery-nav__label {
+    color: #ffffff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  .gallery-nav__dot {
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+  }
+}
+
 @media (max-width: 767px) {
   .gallery-nav {
     display: none;
