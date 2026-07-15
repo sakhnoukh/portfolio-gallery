@@ -69,7 +69,7 @@ export function Bookshelf() {
     const ro = new ResizeObserver(update)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [])
+  }, [loading])
 
   if (loading) {
     return <div className="bookshelf bookshelf--loading">Loading bookshelf…</div>
