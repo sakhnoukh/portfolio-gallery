@@ -26,6 +26,31 @@
   height: 100dvh;
   width: max-content;
   align-items: stretch;
+  position: relative;
+}
+
+.gallery-track__content {
+  display: flex;
+  height: 100%;
+  width: max-content;
+  align-items: stretch;
+  position: relative;
+  background:
+    var(--track-wall-gradient, linear-gradient(to right in oklab, #ffffff 0%, #ffffff 100%)) left top / 100% 70% no-repeat,
+    var(--track-floor-gradient, linear-gradient(to right in oklab, #d8d8d8 0%, #d8d8d8 100%)) left bottom / 100% 30% no-repeat;
+
+  /* Single continuous baseboard across the whole track */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 70%;
+    height: 0.2%;
+    background: #b0b0b0;
+    z-index: 1;
+    pointer-events: none;
+  }
 }
 
 .wall-segment {
@@ -33,50 +58,21 @@
   width: 100vw;
   height: 100%;
   flex-shrink: 0;
+  background-color: transparent;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: clamp(1.5rem, 4vw, 4rem);
   padding: clamp(1rem, 4vw, 4rem);
   padding-bottom: 40vh;
-  background: linear-gradient(
-    to bottom,
-    var(--wall, #ffffff) 0%,
-    var(--wall, #ffffff) 70%,
-    #b0b0b0 70%,
-    #b0b0b0 70.2%,
-    var(--floor-start, #d8d8d8) 70.2%,
-    var(--floor-end, #999999) 100%
-  );
 }
 
 /* Hallway: dead space between rooms where wall & floor colour blends */
 .wall-segment--hallway {
   width: 80vw;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
-  padding-bottom: 32vh;
-  background:
-    /* Floor vertical darkening — multiplies with floor color below */
-    linear-gradient(to bottom, #ffffff 0%, #b4b4b4 100%) left bottom / 100% 29.8% no-repeat,
-    /* Floor horizontal color transition */
-    linear-gradient(to right, var(--floor-from, #d8d8d8), var(--floor-to, #d8d8d8)) left bottom / 100% 29.8% no-repeat,
-    /* Wall horizontal blend — top 70% */
-    linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff)) left top / 100% 70% no-repeat;
-  background-blend-mode: multiply, normal, normal;
-
-  /* Baseboard — pseudo-element so it's independent of background layers */
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 70%;
-    height: 2px;
-    background: #b0b0b0;
-    z-index: 1;
-    pointer-events: none;
-  }
+  padding-bottom: 30vh;
 
   .hallway-label {
     margin: 0 8vw 0 0;
@@ -91,6 +87,11 @@
     white-space: nowrap;
     color: rgba(30, 30, 30, 0.55);
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  }
+
+  &:not(.wall-segment--first-entrance) .hallway-label {
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -219,6 +220,16 @@
     }
   }
 
+  .gallery-track__content {
+    background:
+      var(--track-wall-gradient, linear-gradient(to right in oklab, #ffffff 0%, #ffffff 100%)) left top / 100% 80% no-repeat,
+      var(--track-floor-gradient, linear-gradient(to right in oklab, #d8d8d8 0%, #d8d8d8 100%)) left bottom / 100% 20% no-repeat;
+
+    &::before {
+      top: 80%;
+    }
+  }
+
   .wall-segment {
     scroll-snap-align: center;
     flex-direction: column;
@@ -226,28 +237,11 @@
     justify-content: center;
     padding-top: clamp(2rem, 6vh, 4rem);
     padding-bottom: clamp(2rem, 8vh, 4rem);
-    background: linear-gradient(
-      to bottom,
-      var(--wall, #ffffff) 0%,
-      var(--wall, #ffffff) 80%,
-      #b0b0b0 80%,
-      #b0b0b0 80.2%,
-      var(--floor-start, #d8d8d8) 80.2%,
-      var(--floor-end, #999999) 100%
-    );
+    background-color: transparent;
   }
 
   .wall-segment--hallway {
     width: 80vw;
-    background:
-      linear-gradient(to bottom, #ffffff 0%, #b4b4b4 100%) left bottom / 100% 19.8% no-repeat,
-      linear-gradient(to right, var(--floor-from, #d8d8d8), var(--floor-to, #d8d8d8)) left bottom / 100% 19.8% no-repeat,
-      linear-gradient(to right, var(--wall-from, #ffffff), var(--wall-to, #ffffff)) left top / 100% 80% no-repeat;
-    background-blend-mode: multiply, normal, normal;
-
-    &::before {
-      top: 80%;
-    }
 
     .hallway-label {
       font-size: clamp(0.7rem, 3.5vw, 1rem);

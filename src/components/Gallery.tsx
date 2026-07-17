@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { pieces, rooms, type Piece } from '../data/pieces'
@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger)
 export function Gallery() {
   const pinRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null)
   const hallwayRefs = useRef<(HTMLElement | null)[]>([])
   const [inspected, setInspected] = useState<Piece | null>(null)
@@ -24,18 +25,102 @@ export function Gallery() {
     { label: 'EXPR', progress: 0 },
     { label: 'INFO', progress: 0 },
   ])
+  const [trackGradient, setTrackGradient] = useState<{
+    wall: string
+    floor: string
+  }>({
+    wall: 'linear-gradient(to right, #ffffff 0%, #ffffff 100%)',
+    floor: 'linear-gradient(to right, #d8d8d8 0%, #d8d8d8 100%)',
+  })
+
+  const updateTrackGradient = useCallback(() => {
+    const content = contentRef.current
+    if (!content) return
+    const trackChildren = Array.from(content.children) as HTMLElement[]
+    const total = content.scrollWidth
+    if (total === 0 || trackChildren.length < 2) return
+
+    let offset = 0
+    const wallStops: string[] = []
+    const floorStops: string[] = []
+    const feather = 20 // px to ease transition edges
+
+    const pushStops = (wall: string, floor: string) => {
+      const percent = (offset / total) * 100
+      wallStops.push(`${wall} ${percent}%`)
+      floorStops.push(`${floor} ${percent}%`)
+    }
+
+    // Push a stop at an explicit px offset (for feathering)
+    const pushStopsAt = (wall: string, floor: string, px: number) => {
+      const percent = (px / total) * 100
+      wallStops.push(`${wall} ${percent}%`)
+      floorStops.push(`${floor} ${percent}%`)
+    }
+
+    // color-mix midpoint helper for feathering
+    const mix = (a: string, b: string) => `color-mix(in oklab, ${a}, ${b})`
+
+    // Intro segment — hold white solid through the intro's full width
+    const intro = trackChildren[0]
+    pushStops('#ffffff', '#d8d8d8')
+    offset += intro.offsetWidth
+    pushStops('#ffffff', '#d8d8d8')
+
+    let childIndex = 1
+
+    rooms.forEach((room, i) => {
+      // Hallway — feather the transition across the gap
+      const hallway = trackChildren[childIndex]
+      if (!hallway) return
+
+      const prevRoom = rooms[i - 1]
+      const prevWall = prevRoom?.wall ?? '#ffffff'
+      const prevFloor = prevRoom?.floorStart ?? room.floorStart
+
+      const gapStart = offset
+      const gapEnd = offset + hallway.offsetWidth
+      const gapMid = (gapStart + gapEnd) / 2
+
+      // Pull the solid stop back by feather px
+      pushStopsAt(prevWall, prevFloor, gapStart - feather)
+      // Midpoint hint to bend the interpolation curve
+      pushStopsAt(mix(prevWall, room.wall), mix(prevFloor, room.floorStart), gapMid)
+      // Push the target solid stop forward by feather px
+      pushStopsAt(room.wall, room.floorStart, gapEnd + feather)
+
+      offset = gapEnd
+      childIndex += 1
+
+      // Room pieces — hold the room color solid through all content.
+      const roomPieces = pieces.filter((p) => p.room === room.id)
+      roomPieces.forEach(() => {
+        const piece = trackChildren[childIndex]
+        if (!piece) return
+        offset += piece.offsetWidth
+        childIndex += 1
+      })
+      pushStops(room.wall, room.floorStart)
+    })
+
+    setTrackGradient({
+      wall: `linear-gradient(to right in oklab, ${wallStops.join(', ')})`,
+      floor: `linear-gradient(to right in oklab, ${floorStops.join(', ')})`,
+    })
+  }, [])
 
   useLayoutEffect(() => {
     const pin = pinRef.current
     const track = trackRef.current
-    if (!pin || !track) return
+    const content = contentRef.current
+    if (!pin || !track || !content) return
 
     const mm = gsap.matchMedia()
 
     mm.add(
       '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
       () => {
-        const getDistance = () => track.scrollWidth - window.innerWidth
+        const getDistance = () => content.scrollWidth - window.innerWidth
 
         const computeSections = () => {
           const distance = getDistance()
@@ -57,7 +142,7 @@ export function Gallery() {
           ])
         }
 
-        const tween = gsap.to(track, {
+        const tween = gsap.to(content, {
           x: () => -getDistance(),
           ease: 'none',
           scrollTrigger: {
@@ -131,6 +216,24 @@ export function Gallery() {
     }
   }, [inspected, showCv])
 
+  // Compute and recompute the unified track gradient as widths change
+  useEffect(() => {
+    const content = contentRef.current
+    if (!content) return
+
+    updateTrackGradient()
+    const observer = new ResizeObserver(updateTrackGradient)
+    observer.observe(content)
+    window.addEventListener('load', updateTrackGradient)
+    ScrollTrigger.addEventListener('refresh', updateTrackGradient)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('load', updateTrackGradient)
+      ScrollTrigger.removeEventListener('refresh', updateTrackGradient)
+    }
+  }, [updateTrackGradient])
+
   const handleNavigate = (targetProgress: number) => {
     const st = scrollTriggerRef.current
     if (!st) return
@@ -160,8 +263,17 @@ export function Gallery() {
   return (
     <>
       <div className="gallery-pin" ref={pinRef}>
-        <div className="gallery-track" ref={trackRef} style={showCv ? { visibility: 'hidden' } : undefined}>
-          <section className="wall-segment wall-segment--intro">
+        <div className="gallery-track" ref={trackRef}>
+          <div
+            className="gallery-track__content"
+            ref={contentRef}
+            style={{
+              visibility: showCv ? 'hidden' : undefined,
+              '--track-wall-gradient': trackGradient.wall,
+              '--track-floor-gradient': trackGradient.floor,
+            } as CSSProperties}
+          >
+            <section className="wall-segment wall-segment--intro">
             <button
               className="intro__cv-toggle"
               onClick={() => setShowCv(true)}
@@ -181,18 +293,6 @@ export function Gallery() {
                 ref={(el) => { hallwayRefs.current[i] = el }}
                 className={`wall-segment wall-segment--hallway ${i === 0 ? 'wall-segment--first-entrance' : ''}`}
                 aria-label={`${room.label} room entrance`}
-                style={
-                  {
-                    '--wall-from': rooms[i - 1]?.wall ?? '#ffffff',
-                    '--wall-to': room.wall,
-                    '--floor-from': rooms[i - 1]?.floorStart ?? room.floorStart,
-                    '--floor-to': room.floorStart,
-                    '--floor-end-from': rooms[i - 1]?.floorEnd ?? room.floorEnd,
-                    '--floor-end-to': room.floorEnd,
-                    '--crease-from': rooms[i - 1]?.crease ?? room.crease,
-                    '--crease-to': room.crease,
-                  } as CSSProperties
-                }
               >
                 <p className="hallway-label">{room.label}</p>
               </section>
@@ -203,12 +303,6 @@ export function Gallery() {
                     className="wall-segment"
                     key={piece.id}
                     aria-label={piece.title}
-                    style={{
-                      '--wall': room.wall,
-                      '--floor-start': room.floorStart,
-                      '--floor-end': room.floorEnd,
-                      '--crease': room.crease,
-                    } as CSSProperties}
                   >
                     <div className="piece-group">
                       <Frame piece={piece} onInspect={setInspected} />
@@ -218,6 +312,7 @@ export function Gallery() {
                 ))}
             </Fragment>
           ))}
+          </div>
         </div>
       </div>
 
