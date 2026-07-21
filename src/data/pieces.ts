@@ -1,6 +1,6 @@
 import nexusCover from '../../Covers/Nexus.png'
 import madridCover from '../../Covers/madrid-guide.jpeg'
-import taxiCover from '../../Covers/taxi.jpeg'
+import taxiCover from '../../Covers/Taxi.jpeg'
 //import currentBookCover from '../../Covers/book.png'
 //import cookingCover from '../../Covers/cooking.jpeg'
 
