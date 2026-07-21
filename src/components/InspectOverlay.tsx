@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { CaseStudyBlock, Piece, TimelineEntry } from '../data/pieces'
 import { Frame } from './Frame'
 import { Bookshelf } from './Bookshelf'
+import { TravelInspectView } from './TravelInspectView'
 
 interface InspectOverlayProps {
   piece: Piece
@@ -182,6 +183,10 @@ export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
 
   if (piece.kind === 'timeline' && piece.timeline) {
     return <TimelineInspectView piece={piece} onClose={onClose} />
+  }
+
+  if (piece.id === 'travel' && piece.travelMap) {
+    return <TravelInspectView piece={piece} onClose={onClose} />
   }
 
   return (

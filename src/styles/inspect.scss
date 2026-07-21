@@ -313,6 +313,124 @@
   color: var(--ink-soft);
 }
 
+/* ── Travel Inspection View ── */
+
+.travel-inspect {
+  background: #f8f6f0;
+}
+
+.travel-inspect__layout {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 7vh 6vw 6vh;
+  gap: clamp(2.5rem, 5vw, 6rem);
+}
+
+.travel-inspect__map-area {
+  flex: 1 1 68%;
+  min-width: 0;
+}
+
+.travel-inspect__eyebrow,
+.travel-inspect__hint {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.travel-inspect__eyebrow {
+  margin-bottom: 2rem;
+}
+
+.travel-inspect__map-wrap {
+  width: 100%;
+  overflow: visible;
+
+  > svg {
+    display: block;
+    width: 112%;
+    max-width: none;
+    height: auto;
+    margin-left: -6%;
+    overflow: visible;
+  }
+
+  > svg * {
+    vector-effect: non-scaling-stroke;
+    fill: #e9e7e2 !important;
+    stroke: #c6c3bc !important;
+    stroke-width: 0.7 !important;
+    stroke-linejoin: round !important;
+    stroke-linecap: round !important;
+  }
+
+  > svg .travel-inspect__country,
+  > svg .travel-inspect__country * {
+    fill: #8b5e3c !important;
+    stroke: #c6c3bc !important;
+    stroke-width: 0.7 !important;
+    cursor: pointer;
+    outline: none;
+    transition: opacity 0.25s ease;
+  }
+
+  > svg .travel-inspect__country:hover,
+  > svg .travel-inspect__country:focus-visible,
+  > svg .travel-inspect__country--active,
+  > svg .travel-inspect__country:hover *,
+  > svg .travel-inspect__country:focus-visible *,
+  > svg .travel-inspect__country--active * {
+    fill: #8b5e3c !important;
+    stroke: #c6c3bc !important;
+    stroke-width: 0.7 !important;
+    opacity: 0.78;
+  }
+}
+
+.travel-inspect__hint {
+  margin-top: 1.5rem;
+  opacity: 0.7;
+}
+
+.travel-inspect__placard {
+  flex: 0 1 30%;
+  max-width: 440px;
+  min-width: 280px;
+  padding: clamp(2rem, 4vw, 4rem);
+  border: 1px solid rgba(34, 34, 59, 0.2);
+  background: #fffdf8;
+  box-shadow: 10px 16px 28px -18px rgba(20, 20, 25, 0.45);
+}
+
+.travel-inspect__placard-inner {
+  animation: travel-placard-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes travel-placard-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.travel-inspect__placard .case-study__title {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+}
+
+.travel-inspect__placard .case-study__body p {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
 /* ── Timeline Inspection View ── */
 
 .timeline-inspect__split {
@@ -472,6 +590,45 @@
   .case-study-view__book-intro {
     text-align: center;
     padding-bottom: 0;
+  }
+
+  .travel-inspect__layout {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 2rem;
+    overflow-y: auto;
+    padding: 5rem 1.25rem 3rem;
+  }
+
+  .travel-inspect__map-area {
+    flex: none;
+  }
+
+  .travel-inspect__map-wrap > svg {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .travel-inspect__eyebrow {
+    margin-bottom: 1rem;
+  }
+
+  .travel-inspect__hint {
+    margin-top: 0.75rem;
+    font-size: 0.55rem;
+  }
+
+  .travel-inspect__placard {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 1.5rem;
+  }
+
+  .travel-inspect__placard .case-study__title {
+    font-size: 2.3rem;
   }
 
   .timeline-inspect__split {

@@ -40,6 +40,19 @@ export interface TimelineEntry {
   description?: string
 }
 
+export interface TravelCountry {
+  id: string
+  name: string
+  status: string
+  note?: string
+  date?: string
+}
+
+export interface TravelMapData {
+  summary: string
+  countries: TravelCountry[]
+}
+
 export interface Piece {
   id: string
   title: string
@@ -52,6 +65,7 @@ export interface Piece {
   accent: string
   subtitle?: string
   timeline?: TimelineEntry[]
+  travelMap?: TravelMapData
   cover?: string
   frameRatio?: string
   caseStudy?: CaseStudyBlock[]
@@ -139,6 +153,53 @@ export const pieces: Piece[] = [
     // cover: cookingCover,
   },
   {
+    id: 'travel',
+    title: 'Travel',
+    year: 'Ongoing',
+    medium: 'New Places · New Perspectives',
+    description:
+      'Exploring new places, cultures and perspectives whenever I get the chance.',
+    variant: 'classic',
+    kind: 'photo',
+    room: 'personal',
+    accent: '#8b5e3c',
+    subtitle: 'A Collection of Memories',
+    travelMap: {
+      summary: 'A growing record of places, people and perspectives gathered across the world.',
+      countries: [
+        { id: 'eg', name: 'Egypt', status: 'Visited' },
+        { id: 'lb', name: 'Lebanon', status: 'Visited' },
+        { id: 'es', name: 'Spain', status: 'Visited' },
+        { id: 'fr', name: 'France', status: 'Visited' },
+        { id: 'it', name: 'Italy', status: 'Visited' },
+        { id: 'de', name: 'Germany', status: 'Visited' },
+        { id: 'ch', name: 'Switzerland', status: 'Visited' },
+        { id: 'mc', name: 'Monaco', status: 'Visited' },
+        { id: 'va', name: 'Vatican City', status: 'Visited' },
+        { id: 'cy', name: 'Cyprus', status: 'Visited' },
+        { id: 'tr', name: 'Turkey', status: 'Visited' },
+        { id: 'no', name: 'Norway', status: 'Visited' },
+        { id: 'gb', name: 'United Kingdom', status: 'Visited' },
+        { id: 'co', name: 'Colombia', status: 'Visited' },
+        { id: 'gr', name: 'Greece', status: 'Visited' },
+        { id: 'pt', name: 'Portugal', status: 'Visited' },
+      ],
+    },
+  },
+  {
+    id: 'scuba-diving',
+    title: 'Scuba Diving',
+    year: 'Ongoing',
+    medium: 'Ocean · Curiosity · Adventure',
+    description:
+      'Discovering the quiet, unfamiliar world beneath the surface one dive at a time.',
+    variant: 'classic',
+    kind: 'photo',
+    room: 'personal',
+    accent: '#1f6f8b',
+    subtitle: 'Below the Surface',
+  },
+  {
     id: 'experience',
     title: 'A Working History',
     year: '2023–2026',
@@ -150,11 +211,11 @@ export const pieces: Piece[] = [
     room: 'experience',
     accent: '#22223b',
     timeline: [
-      { year: '2023-2027', role: 'B.Sc. Computer Science & AI', place: 'IE University', description: 'Pursuing a degree in Computer Science and Artificial Intelligence at IE University in Madrid. Coursework spans algorithms, machine learning, NLP, and software engineering, with hands-on projects in multimodal RAG systems and full-stack development.' },
-      { year: '2024', role: 'Cybersecurity Intern', place: 'MNT Halan', description: 'Worked on securing fintech infrastructure at MNT Halan, Egypt\'s leading super-app. Focused on vulnerability assessment, threat modeling, and implementing security best practices across microservices.' },
-      { year: '2025', role: 'Software Engineer', place: 'Freelance', description: 'Built and deployed web applications for international clients, specializing in Next.js frontends and Python backends. Projects ranged from e-commerce platforms to data visualization dashboards.' },
-      { year: '2025-2026', role: 'Blockchain Developer', place: 'Help.Fun', description: 'Developed smart contracts and decentralized applications on Solana. Worked on DeFi protocols, NFT marketplaces, and on-chain data indexing using Rust and TypeScript.' },
-      { year: '2026', role: 'R&D Intern', place: 'Orascom Construction', description: 'Research and development internship exploring applications of AI and automation in large-scale construction. Investigating computer vision for site monitoring and predictive analytics for project management.' },
+      { year: '2023-2027', role: 'B.Sc. Computer Science & AI', place: 'IE University', description: 'Pursuing a degree in Computer Science and Artificial Intelligence at IE University in Madrid. Coursework spans algorithms, ML, NLP, and software engineering, with hands on projects to gain better familiarity with the applied concepts and tools used.' },
+      { year: '2024', role: 'Cybersecurity Intern', place: 'MNT Halan', description: 'Joined the Unicorn\'s cybersecurity team. Focused on vulnerability assessment, threat modeling, and implementing security best practices across company suites.' },
+      { year: '2025', role: 'Software Engineer', place: 'Freelance', description: 'Built and deployed a data scrapping algorithm for a social media manager with the aim to provide valuable data that would improve insights on where to take the personalities activity.' },
+      { year: '2025-2026', role: 'Blockchain Developer', place: 'Help.Fun', description: 'Developed a proprietary bonding curve algorithm for a new cryptocurrency launch pad as well as helped design a platform to launch tokens on all the big 3 networks (BNB, SOL, ETH) at the same time.' },
+      { year: '2026', role: 'R&D Intern', place: 'Orascom Construction', description: 'Research and Development internship exploring applications of AI and automation in a large scale company. Worked on projects including NLP, ML, and RAG.' },
     ],
   },
   {
