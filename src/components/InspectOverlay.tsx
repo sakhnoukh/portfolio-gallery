@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import type { CaseStudyBlock, Piece } from '../data/pieces'
+import { useEffect, useRef, useState } from 'react'
+import type { CaseStudyBlock, Piece, TimelineEntry } from '../data/pieces'
 import { Frame } from './Frame'
 import { Bookshelf } from './Bookshelf'
 
@@ -50,6 +50,120 @@ function CaseStudyContent({ blocks }: { blocks: CaseStudyBlock[] }) {
   )
 }
 
+function TimelineInspectView({ piece, onClose }: InspectOverlayProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const entryRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
+  const timeline = piece.timeline ?? []
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKey)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKey)
+    }
+  }, [onClose])
+
+  useEffect(() => {
+    const container = scrollRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const containerRect = container.getBoundingClientRect()
+      const centerY = containerRect.top + containerRect.height / 2
+
+      let closest = 0
+      let closestDist = Infinity
+      entryRefs.current.forEach((el, i) => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const entryCenter = rect.top + rect.height / 2
+        const dist = Math.abs(entryCenter - centerY)
+        if (dist < closestDist) {
+          closestDist = dist
+          closest = i
+        }
+      })
+      setActiveIndex(closest)
+    }
+
+    container.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const handleEntryClick = (index: number) => {
+    entryRefs.current[index]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    })
+  }
+
+  const activeEntry: TimelineEntry | undefined = timeline[activeIndex]
+
+  return (
+    <main className="case-study-view timeline-inspect" aria-label={`Case study: ${piece.title}`}>
+      <button className="case-study-view__close" onClick={onClose} autoFocus>
+        Back to Gallery ✕
+      </button>
+
+      <div className="timeline-inspect__split">
+        <div className="timeline-inspect__left" ref={scrollRef}>
+          <div className="timeline-inspect__entries">
+            {timeline.map((entry, i) => (
+              <div
+                key={`${entry.year}-${entry.role}`}
+                ref={(el) => { entryRefs.current[i] = el }}
+                className={`timeline-inspect__entry ${i === activeIndex ? 'timeline-inspect__entry--active' : ''}`}
+                onClick={() => handleEntryClick(i)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handleEntryClick(i)
+                  }
+                }}
+              >
+                <span className="timeline-inspect__entry-year">{entry.year}</span>
+                <span className="timeline-inspect__entry-role">{entry.role}</span>
+                <span className="timeline-inspect__entry-place">{entry.place}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="timeline-inspect__right">
+          {activeEntry && (
+            <div className="timeline-inspect__detail" key={activeIndex}>
+              <p className="case-study__kicker">{activeEntry.year}</p>
+              <h1 className="case-study__title">{activeEntry.role}</h1>
+              <div className="case-study__meta">
+                <span>{activeEntry.place}</span>
+              </div>
+              <div className="case-study__body">
+                <p>{activeEntry.description ?? ''}</p>
+                <div className="case-study__rule" />
+                <p className="case-study__prompt">
+                  Scroll or click entries to explore · Press Escape to return
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </main>
+  )
+}
+
 export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
@@ -65,6 +179,10 @@ export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
       window.removeEventListener('keydown', handleKey)
     }
   }, [onClose])
+
+  if (piece.kind === 'timeline' && piece.timeline) {
+    return <TimelineInspectView piece={piece} onClose={onClose} />
+  }
 
   return (
     <main className="case-study-view" aria-label={`Case study: ${piece.title}`}>
@@ -119,18 +237,6 @@ export function InspectOverlay({ piece, onClose }: InspectOverlayProps) {
 
             <div className="case-study__body">
               <p>{piece.description}</p>
-
-              {piece.kind === 'timeline' && piece.timeline && (
-                <div className="case-study__timeline">
-                  {piece.timeline.map((entry) => (
-                    <div className="case-study__timeline-entry" key={`${entry.year}-${entry.role}`}>
-                      <span className="case-study__timeline-year">{entry.year}</span>
-                      <span className="case-study__timeline-role">{entry.role}</span>
-                      <span className="case-study__timeline-place">{entry.place}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
 
               {piece.caseStudy && <CaseStudyContent blocks={piece.caseStudy} />}
 

@@ -1,5 +1,9 @@
 import nexusCover from '../../Covers/Nexus.png'
 import madridCover from '../../Covers/madrid-guide.jpeg'
+import taxiCover from '../../Covers/taxi.jpeg'
+//import currentBookCover from '../../Covers/book.png'
+//import cookingCover from '../../Covers/cooking.jpeg'
+
 
 export type FrameVariant = 'modern' | 'classic' | 'canvas'
 
@@ -15,9 +19,9 @@ export interface Room {
 }
 
 export const rooms: Room[] = [
-  { id: 'projects', label: 'Personal Projects', wall: '#ffffff', floorStart: '#d8d8d8', floorEnd: '#999999', crease: '#b0b0b0' },
-  { id: 'experience', label: 'Experience', wall: '#1e3a2f', floorStart: '#3a5a4a', floorEnd: '#1a2e24', crease: '#0e1a14' },
-  { id: 'personal', label: 'Personal Information', wall: '#0F1722', floorStart: '#1a2738', floorEnd: '#080d16', crease: '#050a12' },
+  { id: 'projects', label: 'Projects', wall: '#ffffff', floorStart: '#d8d8d8', floorEnd: '#999999', crease: '#b0b0b0' },
+  { id: 'experience', label: 'Professional Experience', wall: '#1e3a2f', floorStart: '#3a5a4a', floorEnd: '#1a2e24', crease: '#0e1a14' },
+  { id: 'personal', label: 'Personal Interests', wall: '#0F1722', floorStart: '#1a2738', floorEnd: '#080d16', crease: '#050a12' },
 ]
 
 export type ArtKind = 'poster' | 'book' | 'photo' | 'timeline'
@@ -33,6 +37,7 @@ export interface TimelineEntry {
   year: string
   role: string
   place: string
+  description?: string
 }
 
 export interface Piece {
@@ -94,7 +99,7 @@ export const pieces: Piece[] = [
     id: 'nyc-taxis',
     title: 'NYC Taxis',
     year: '2026',
-    medium: 'MLFlow · Google Maps · Qwen · RAG',
+    medium: 'MLFlow · Qwen · Google Maps · RAG',
     description:
       'Allows user to select a trip and receive the fastest route, estimated cost and allow preference based trip selection.',
     url: 'https://github.com/sakhnoukh/Im-waulkin-hereeeee',
@@ -103,6 +108,7 @@ export const pieces: Piece[] = [
     room: 'projects',
     accent: '#93a600',
     subtitle: 'No. 03',
+    cover: taxiCover,
   },
   {
     id: 'reading',
@@ -115,7 +121,8 @@ export const pieces: Piece[] = [
     kind: 'book',
     room: 'personal',
     accent: '#8c5a2b',
-    subtitle: 'Currently reading',
+    subtitle: '',
+    //cover: currentBookCover,
   },
   {
     id: 'cooking',
@@ -129,6 +136,7 @@ export const pieces: Piece[] = [
     room: 'personal',
     accent: '#3a3a52',
     subtitle: 'Series of 12',
+    // cover: cookingCover,
   },
   {
     id: 'experience',
@@ -136,17 +144,17 @@ export const pieces: Piece[] = [
     year: '2023–2026',
     medium: 'Curriculum Vitae',
     description:
-      'Seven years across product teams, told as a single vertical line. Placeholder timeline — swap with your real history.',
+      '.',
     variant: 'canvas',
     kind: 'timeline',
     room: 'experience',
     accent: '#22223b',
     timeline: [
-      { year: '2023-2027', role: 'B.Sc. Computer Science & AI', place: 'IE University' },
-      { year: '2024', role: 'Cybersecurity Intern', place: 'MNT Halan' },
-      { year: '2025', role: 'Software Engineer', place: 'Freelance' },
-      { year: '2025-2026', role: 'Blockchain Developer', place: 'Help.Fun' },
-      { year: '2026', role: 'R&D Intern', place: 'Orascom Construction' },
+      { year: '2023-2027', role: 'B.Sc. Computer Science & AI', place: 'IE University', description: 'Pursuing a degree in Computer Science and Artificial Intelligence at IE University in Madrid. Coursework spans algorithms, machine learning, NLP, and software engineering, with hands-on projects in multimodal RAG systems and full-stack development.' },
+      { year: '2024', role: 'Cybersecurity Intern', place: 'MNT Halan', description: 'Worked on securing fintech infrastructure at MNT Halan, Egypt\'s leading super-app. Focused on vulnerability assessment, threat modeling, and implementing security best practices across microservices.' },
+      { year: '2025', role: 'Software Engineer', place: 'Freelance', description: 'Built and deployed web applications for international clients, specializing in Next.js frontends and Python backends. Projects ranged from e-commerce platforms to data visualization dashboards.' },
+      { year: '2025-2026', role: 'Blockchain Developer', place: 'Help.Fun', description: 'Developed smart contracts and decentralized applications on Solana. Worked on DeFi protocols, NFT marketplaces, and on-chain data indexing using Rust and TypeScript.' },
+      { year: '2026', role: 'R&D Intern', place: 'Orascom Construction', description: 'Research and development internship exploring applications of AI and automation in large-scale construction. Investigating computer vision for site monitoring and predictive analytics for project management.' },
     ],
   },
   {

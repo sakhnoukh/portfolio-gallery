@@ -313,6 +313,129 @@
   color: var(--ink-soft);
 }
 
+/* ── Timeline Inspection View ── */
+
+.timeline-inspect__split {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.timeline-inspect__left {
+  width: 50%;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+}
+
+.timeline-inspect__entries {
+  display: flex;
+  flex-direction: column;
+  gap: 10rem;
+  position: relative;
+  padding: calc(50vh - 3rem) 0;
+  padding-left: 1rem;
+  width: fit-content;
+  margin: 0 auto;
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.timeline-inspect__entry {
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0 2rem 0 0;
+  position: relative;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  > span {
+    opacity: 0.35;
+    transition: opacity 0.3s ease;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(-1rem - 4px);
+    top: 0.35em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f8f6f0;
+    border: 1px solid #1a1a1a;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  &:hover > span {
+    opacity: 0.7;
+  }
+}
+
+.timeline-inspect__entry--active {
+  > span {
+    opacity: 1;
+  }
+
+  &::before {
+    background: #1a1a1a;
+  }
+}
+
+.timeline-inspect__entry-year {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+}
+
+.timeline-inspect__entry-role {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.timeline-inspect__entry-place {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.timeline-inspect__right {
+  width: 50%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 8vw 0 4vw;
+}
+
+.timeline-inspect__detail {
+  animation: timeline-detail-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes timeline-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timeline-inspect__detail .case-study__title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.timeline-inspect__detail .case-study__body p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
 @media (max-width: 767px) {
   .case-study-view__split {
     flex-direction: column;
@@ -349,5 +472,29 @@
   .case-study-view__book-intro {
     text-align: center;
     padding-bottom: 0;
+  }
+
+  .timeline-inspect__split {
+    flex-direction: column;
+  }
+
+  .timeline-inspect__left {
+    width: 100%;
+    height: 45vh;
+  }
+
+  .timeline-inspect__entries {
+    padding: calc(22.5vh - 2rem) 0;
+    padding-left: 1rem;
+  }
+
+  .timeline-inspect__entry {
+    padding: 0 1.25rem 0 0;
+  }
+
+  .timeline-inspect__right {
+    width: 100%;
+    height: auto;
+    padding: 2rem 1.25rem 5rem;
   }
 }

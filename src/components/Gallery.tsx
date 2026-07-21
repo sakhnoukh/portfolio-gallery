@@ -282,7 +282,7 @@ export function Gallery() {
               <span className="intro__cv-toggle-label intro__cv-toggle-label--active">Gallery</span>
               <span className="intro__cv-toggle-label">CV</span>
             </button>
-            <p>Sami Akhnoukh — Selected Works</p>
+            <p>Sami Akhnoukh</p>
             <h1>The Gallery</h1>
             <span className="intro-hint">Walk right</span>
           </section>
